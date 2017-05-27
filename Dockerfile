@@ -1,0 +1,28 @@
+FROM mhart/alpine-node
+
+MAINTAINER Zeng Shu <ist@insilicotech.co.jp>
+
+# If you have native dependencies, you'll need extra tools
+# RUN apk add --no-cache make gcc g++ python
+
+# Environment configuration
+# ENV GITBOOK_VERSION=3.2.2
+# Replace static difinition by following command:
+#  gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g'
+ENV BOOKDIR /gitbook
+
+VOLUME $BOOKDIR
+
+# If you need npm, don't use a base tag
+RUN apk update \
+    && apk add --no-cache grep sed \
+    && npm install gitbook-cli -g \
+    && gitbook fetch $(gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g') \
+    && npm cache clear \
+    && rm -rf /tmp/*
+
+EXPOSE 8888 35729
+
+WORKDIR $BOOKDIR
+
+CMD ["gitbook", "--help"]
