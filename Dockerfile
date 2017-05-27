@@ -13,16 +13,15 @@ ENV BOOKDIR /gitbook
 
 VOLUME $BOOKDIR
 
+WORKDIR $BOOKDIR
+
+EXPOSE 4000 35729
+
 # If you need npm, don't use a base tag
 RUN apk update \
     && apk add --no-cache grep sed \
     && npm install gitbook-cli -g \
     && gitbook fetch $(gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g') \
     && npm cache clear \
+    && apk del grep sed \
     && rm -rf /tmp/*
-
-EXPOSE 4000 35729
-
-WORKDIR $BOOKDIR
-
-CMD ["gitbook", "--help"]
