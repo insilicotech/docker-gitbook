@@ -7,8 +7,8 @@ MAINTAINER Zeng Shu <ist@insilicotech.co.jp>
 
 # Environment configuration
 # ENV GITBOOK_VERSION=3.2.2
-# Replace static difinition by following command:
-#  gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g'
+# Replace hard coding by following command:
+#   gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g'
 ENV BOOKDIR /gitbook
 
 VOLUME $BOOKDIR
@@ -21,7 +21,7 @@ RUN apk update \
     && npm cache clear \
     && rm -rf /tmp/*
 
-EXPOSE 8888 35729
+EXPOSE 4000 35729
 
 WORKDIR $BOOKDIR
 
