@@ -23,11 +23,11 @@ RUN apk add --no-cache ${BUILD_PKGS} \
     && tar -xf node-${VERSION}.tar.xz \
     && cd node-${VERSION} \
     && ./configure --prefix=/usr ${CONFIG_FLAGS} \
-    && make -j$(getconf _NPROCESSORS_ONLN) && \
+    && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
     && cd / \
     && if [ -x /usr/bin/npm ]; then \
-        npm install -g npm@${NPM_VERSION} && \
+        npm install -g npm@${NPM_VERSION} \
         find /usr/lib/node_modules/npm -name test -o -name .bin -type d | xargs rm -rf; \
        fi \
    && apk del ${BUILD_PKGS} \
