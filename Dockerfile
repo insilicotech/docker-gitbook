@@ -11,15 +11,24 @@ MAINTAINER Zeng Shu <ist@insilicotech.co.jp>
 #   gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g'
 ENV BOOKDIR /gitbook
 
+COPY phantomjs/phantomjs /tmp/phantomjs
+COPY phantomjs/lib /usr/lib/
+
 # If you need npm, don't use a base tag
+
 RUN apk update \
     && apk add --no-cache grep sed \
     && npm install gitbook-cli -g \
     && gitbook fetch $(gitbook ls-remote | grep latest|cut -d':' -f2| sed 's/ //g') \
+    && install -m755 /tmp/phantomjs /usr/bin/phantomjs \
     && npm cache clear \
     && apk del grep sed \
     && rm -rf /tmp/*
 
+
 VOLUME $BOOKDIR
+
 WORKDIR $BOOKDIR
+
 EXPOSE 4000 35729
+
